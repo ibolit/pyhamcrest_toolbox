@@ -1,6 +1,15 @@
+.. image:: https://api.codeclimate.com/v1/badges/03115faeae6b406391e5/maintainability
+   :target: https://codeclimate.com/github/ibolit/pyhamcrest_metamatchers/maintainability
+   :alt: Maintainability
+
 ======================
 PyHamcrest Toolbox
 ======================
+
+Important note
+^^^^^^^^^^^^^^
+**This project is at the stage of initial setup, it is to go live very soon.
+Don't use it just yet.**
 
 PyHamcrest is a great thing for writing reusable tests, but sometimes
 writing your own matchers may be a bit of a chore. This project aims at
@@ -13,7 +22,9 @@ less time fixing the first of the checks only to find the the second one is
 still failing, and that means that you should have fixed the first one in a
 different way.
 
-So, instead of this::
+So, instead of this:
+
+.. code:: python
 
     def test_the_holy_grail():
         the_holy_grail = seek_the_holy_grail()
@@ -22,7 +33,9 @@ So, instead of this::
         assert_that(the_holy_grail.width, greater_than(6))
         assert_that(the_holy_grail.height, greater_than(7))
 
-this should be written::
+this should be written:
+
+.. code:: python
 
     def test_the_holy_grail():
         the_holy_grail = seek_the_holy_grail()
@@ -42,7 +55,9 @@ All you have to do is to write your ``is_holy`` matcher that inherits from the
 for each of the holy grail properties enhancing them with the
 ``MatcherPluginMixin``, and you register them with the ``is_holy`` matcher.
 
-So, this is your ``is_holy`` matcher::
+So, this is your ``is_holy`` matcher:
+
+.. code:: python
 
     class IsHolyMatcher(MultisegmentMatcher):
         def __init__(self):
@@ -53,7 +68,9 @@ So, this is your ``is_holy`` matcher::
 
 And that's it. You don't have to override the usual matcher methods. Everything
 will be done by the parent class. However, it doesn't do any matching yet, so we
-need to write the plugins. Let's start with the actual holyness::
+need to write the plugins. Let's start with the actual holyness:
+
+.. code:: python
 
     class HolynessMatcher(BaseMatcher, MatcherPluginMixin):
         def __init__(is_holy=True):
@@ -72,7 +89,9 @@ need to write the plugins. Let's start with the actual holyness::
             mismatch_description.append_text(
                 "The grail was {}holy".format("" if item.is_holy() else "not "))
 
-And then you register it with the main matcher::
+And then you register it with the main matcher:
+
+.. code:: python
 
     class IsHolyMatcher(MultisegmentMatcher):
         def __init__(self, is_holy):
@@ -88,7 +107,9 @@ Of course, you could write that ``HolynessMatcher`` logic in your
 For now, we only have this bit: ``assert_that(the_grail, is_holy())``, and
 not the ``.with_width(...)`` stuff. So let's write it. I won't go through the
 process of writing the plugin for the width as it is rather straightforward,
-but here's how you register it with the main matcher::
+but here's how you register it with the main matcher:
+
+.. code:: python
 
     class IsHolyMatcher(MultisegmentMatcher):
         def __init__(self, is_holy):
