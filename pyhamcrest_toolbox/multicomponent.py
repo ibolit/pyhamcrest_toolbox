@@ -3,7 +3,7 @@ from hamcrest.core.base_matcher import BaseMatcher
 from .util import get_description, get_mismatch_description, sentence_case
 
 
-class MatcherPluginMixin(BaseMatcher):
+class MatcherPlugin(BaseMatcher):
     def __init__(self, *args, **kwargs):
         self.passed = False
 
@@ -26,7 +26,7 @@ class MatcherPluginMixin(BaseMatcher):
         raise NotImplementedError()
 
 
-class MultisegmentMatcher(BaseMatcher):
+class MulticomponentMatcher(BaseMatcher):
     def __init__(self, *args, **kwargs):
         self._matchers = []
 

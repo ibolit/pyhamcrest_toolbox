@@ -3,10 +3,10 @@ Documentation
 =====================================
 
 
-MultisegmentMatcher
+MulticomponentMatcher
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. autoclass:: pyhamcrest_toolbox.multicomponent.MultisegmentMatcher
+.. autoclass:: pyhamcrest_toolbox.multicomponent.MulticomponentMatcher
 
 The class that is the base for writing multicomponent matchers, i.e. the
 ones that have the form of::
@@ -21,12 +21,12 @@ the final instance returned by the chain must be a matcher.
 You can write your main matching logic in the traditional way, but you can
 also register a matcher plugin from your ``__init__`` method.
 
-Here's an example of what a subclass of the ``MultisegmentMatcher`` could
+Here's an example of what a subclass of the ``MulticomponentMatcher`` could
 look like:
 
 .. code-block:: python
 
-    class GrailMatcher(MultisegmentMatcher):
+    class GrailMatcher(MulticomponentMatcher):
         def __init__(self, is_holy):
             self.register(GrailHolynessMatcher(is_holy))
 
@@ -38,13 +38,13 @@ look like:
             self.register(GrailHeightMatcher(wrap_matcher(height)))
             return self
 
-And this is all it takes to write your multisegment matcher. All the descriptions
+And this is all it takes to write your multicomponent matcher. All the descriptions
 and mismatch descriptions will be build automatically from the plugins.
 
 register
 ^^^^^^^^
 
-.. automethod:: pyhamcrest_toolbox.multicomponent.MultisegmentMatcher.register
+.. automethod:: pyhamcrest_toolbox.multicomponent.MulticomponentMatcher.register
 
 
 MatcherPlugin
@@ -60,10 +60,6 @@ The original standard ``BaseMatcher`` methods are replaced with these ones becau
 they are overridden in the ``MatcherPlugin`` class to work with the
 ``MulticomponentMatcher``.
 
- ``MatcherPlugin`` matchers are still matchers, and can be used without a
-``MulticomponentMatcher``, they can be reused between several
-``MulticomponentMatcher``s and they can even be bunched together and added
-to several different ``MulticomponentMatcher``s as such bunches.
 
 
 .. automethod:: pyhamcrest_toolbox.multicomponent.MatcherPlugin.component_matches
