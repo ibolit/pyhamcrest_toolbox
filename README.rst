@@ -1,5 +1,5 @@
-.. image:: https://api.codeclimate.com/v1/badges/03115faeae6b406391e5/maintainability
-   :target: https://codeclimate.com/github/ibolit/pyhamcrest_metamatchers/maintainability
+.. image:: https://api.codeclimate.com/v1/badges/511fa5e42116a9ab746b/maintainability
+   :target: https://codeclimate.com/github/ibolit/pyhamcrest_toolbox/maintainability
    :alt: Maintainability
 
 ======================

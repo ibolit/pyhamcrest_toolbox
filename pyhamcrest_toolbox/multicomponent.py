@@ -1,9 +1,9 @@
 from hamcrest.core.base_matcher import BaseMatcher
 
-from .util import get_mismatch_description
+from .util import get_description, get_mismatch_description, sentence_case
 
 
-class MatcherPluginMixin:
+class MatcherPluginMixin(BaseMatcher):
     def __init__(self, *args, **kwargs):
         self.passed = False
 
@@ -51,11 +51,14 @@ class MultisegmentMatcher(BaseMatcher):
 
 
     def describe_to(self, description):
-        for m in self._matchers:
-            description.append_description_of(m)
+        descriptions = [get_description(m) for m in self._matchers]
+        a = "{}.".format("; ".join(descriptions))
+        a = sentence_case(a)
+        description.append_text(a)
 
 
     def describe_mismatch(self, item, mismatch_description):
         m_desrs = [get_mismatch_description(m, item) for m in self._matchers]
         m_desrs = filter(None, m_desrs)
-        mismatch_description.append_text("; ".join(m_desrs))
+        a = sentence_case("{}.".format("; ".join(m_desrs)))
+        mismatch_description.append_text(a)
