@@ -17,11 +17,6 @@ PyHamcrest Toolbox
 PyHamcrest Toolbox
 ======================
 
-Important note
-^^^^^^^^^^^^^^
-**This project is at the stage of initial setup, it is to go live very soon.
-Don't use it just yet.**
-
 PyHamcrest is a great thing for writing reusable tests, but sometimes
 writing your own matchers may be a bit of a chore. This project aims at
 making this task easy, fast and even fun (for want of a better word).

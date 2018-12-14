@@ -31,11 +31,11 @@ sys.path.insert(0, a_path)
 project = u'pyhamcrest_toolbox'
 copyright = u'2018, Timofey Danshin'
 author = u'Timofey Danshin'
-
+from pyhamcrest_toolbox import __version__
 # The short X.Y version
-version = u''
+version = __version__
 # The full version, including alpha/beta/rc tags
-release = u''
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------

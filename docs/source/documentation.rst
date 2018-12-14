@@ -21,6 +21,10 @@ the final instance returned by the chain must be a matcher.
 You can write your main matching logic in the traditional way, but you can
 also register a matcher plugin from your ``__init__`` method.
 
+The MatcherPlugin entities are still matchers and can be used outside of
+MulticomponentMatchers. They can be reused in several MulticomponentMatchers,
+or they can even be grouped into mixins and plugged in as bunches.
+
 Here's an example of what a subclass of the ``MulticomponentMatcher`` could
 look like:
 
