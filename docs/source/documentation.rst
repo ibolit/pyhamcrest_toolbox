@@ -61,16 +61,24 @@ they are overridden in the ``MatcherPlugin`` class to work with the
 ``MulticomponentMatcher``.
 
 
+component_matches
+^^^^^^^^^^^^^^^^^
 
 .. automethod:: pyhamcrest_toolbox.multicomponent.MatcherPlugin.component_matches
 
 Return ``True`` if it matches, ``False`` otherwise.
+
+describe_to
+^^^^^^^^^^^^^^
 
 .. automethod:: pyhamcrest_toolbox.multicomponent.MatcherPlugin.describe_to
 
 The same as ``desribe_to`` in ``Matcher``
 (:py:meth:`hamcrest.core.selfdescribing.SelfDescribing.describe_to`). Add the
 description of the object you expect to the description provided.
+
+describe_component_mismatch
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automethod:: pyhamcrest_toolbox.multicomponent.MatcherPlugin.describe_component_mismatch
 
