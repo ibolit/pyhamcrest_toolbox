@@ -27,13 +27,6 @@ class MatcherPluginMixin(BaseMatcher):
 
 
 class MultisegmentMatcher(BaseMatcher):
-    """Makes use of the MatcherPluginMixin.
-    The idea is that you register component matchers that
-    do the comparison of the actual parts of the thing that should be
-    verified by this matcher. You just add methods like `with_headers()`,
-    which add the matcher to self.matchers. Don't forget to return `self`.
-
-    """
     def __init__(self, *args, **kwargs):
         self._matchers = []
 
@@ -47,6 +40,15 @@ class MultisegmentMatcher(BaseMatcher):
 
 
     def register(self, plugin):
+        """
+        Call this method to register your plugins to your matcher, either from
+        your additional matcher methods (``with_something`` or ``and_someting``)
+        or from the ``__init__`` method. **NOTE** that you **must** return ``self``
+        from those additional matcher methods.
+
+        :param plugin: Instances of ``MatcherPluginMixin``
+        :return:
+        """
         self._matchers.append(plugin)
 
 
