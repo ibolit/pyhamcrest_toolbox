@@ -34,9 +34,9 @@ look like:
             self.register(GrailWidthMatcher(wrap_matcher(width)))
             return self
 
-         def with_height(height):
-             self.register(GrailHeightMatcher(wrap_matcher(height)))
-             return self
+        def with_height(height):
+            self.register(GrailHeightMatcher(wrap_matcher(height)))
+            return self
 
 And this is all it takes to write your multisegment matcher. All the descriptions
 and mismatch descriptions will be build automatically from the plugins.
@@ -45,3 +45,39 @@ register
 ^^^^^^^^
 
 .. automethod:: pyhamcrest_toolbox.multicomponent.MultisegmentMatcher.register
+
+
+MatcherPlugin
+^^^^^^^^^^^^^^^^^^
+
+.. autoclass:: pyhamcrest_toolbox.multicomponent.MatcherPlugin
+
+This is the class to extend when you create your matcher plugins for a
+multicomponent matcher. Instead of overriding the usual ``BaseMatcher``
+methods, you need to override the ones below.
+
+The original standard ``BaseMatcher`` methods are replaced with these ones because
+they are overridden in the ``MatcherPlugin`` class to work with the
+``MulticomponentMatcher``.
+
+ ``MatcherPlugin`` matchers are still matchers, and can be used without a
+``MulticomponentMatcher``, they can be reused between several
+``MulticomponentMatcher``s and they can even be bunched together and added
+to several different ``MulticomponentMatcher``s as such bunches.
+
+
+.. automethod:: pyhamcrest_toolbox.multicomponent.MatcherPlugin.component_matches
+
+Return ``True`` if it matches, ``False`` otherwise.
+
+.. automethod:: pyhamcrest_toolbox.multicomponent.MatcherPlugin.describe_to
+
+The same as ``desribe_to`` in ``Matcher``
+(:py:meth:`hamcrest.core.selfdescribing.SelfDescribing.describe_to`). Add the
+description of the object you expect to the description provided.
+
+.. automethod:: pyhamcrest_toolbox.multicomponent.MatcherPlugin.describe_component_mismatch
+
+Basically, the same as :py:meth:`hamcrest.core.matcher.Matcher.describe_mismatch`.
+
+Here is an example of what a ``GrailHolynessMatcher`` might look like:
