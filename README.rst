@@ -1,6 +1,17 @@
+.. image:: https://badge.fury.io/py/pyhamcrest-toolbox.svg
+   :target: https://badge.fury.io/py/pyhamcrest-toolbox
+
+.. image:: https://readthedocs.org/projects/pyhamcrest-toolbox/badge/?version=latest
+   :target: https://pyhamcrest-toolbox.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
+
 .. image:: https://api.codeclimate.com/v1/badges/511fa5e42116a9ab746b/maintainability
    :target: https://codeclimate.com/github/ibolit/pyhamcrest_toolbox/maintainability
    :alt: Maintainability
+
+.. image:: http://img.shields.io/pypi/dm/pyhamcrest_toolbox.png?style=flat
+    :alt: PyPI Package monthly downloads
+    :target: https://pypi.python.org/pypi/PyHamcrest
 
 ======================
 PyHamcrest Toolbox
