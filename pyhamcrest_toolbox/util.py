@@ -24,7 +24,7 @@ def get_description(matcher):
     return str(descr)
 
 
-def add_not_to_str(a_str, add_not):
+def add_not_to_str(a_str, not_):
     """
     Prefix a string with a not depending on the bool parameter
     >>> add_not_to_str("hello", True)  # "hello"
@@ -33,12 +33,12 @@ def add_not_to_str(a_str, add_not):
     :param a_str:
     :type a_str:
     :param add_not:
-    :type add_not:
+    :type not_:
     :return:
     :rtype:
     """
     return "{}{}".format(
-            "" if add_not else "not ", a_str)
+            "" if not_ else "not ", a_str)
 
 
 def sentence_case(string):
