@@ -50,6 +50,7 @@ class MulticomponentMatcher(BaseMatcher):
         :return:
         """
         self._matchers.append(plugin)
+        return self
 
 
     def describe_to(self, description):

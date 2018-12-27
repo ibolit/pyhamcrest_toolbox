@@ -47,9 +47,9 @@ this should be written:
         the_holy_grail = seek_the_holy_grail()
         assert_that(
             the_holy_grail,
-            is_holy()\
-                .with_depth(greater_than(5)).\
-                .with_width(greater_than(6)).\
+            is_holy()
+                .with_depth(greater_than(5))
+                .with_width(greater_than(6))
                 .with_height(greater_than(7))
         )
 
@@ -57,15 +57,15 @@ The second one, however, requires writing your own matchers. With this toolbox,
 it is easy.
 
 All you have to do is to write your ``is_holy`` matcher that inherits from the
-``MultisegmentMatcher`` as the backbone. Then you write individual matchers
+``MulticomponentMatcher`` as the backbone. Then you write individual matchers
 for each of the holy grail properties enhancing them with the
-``MatcherPluginMixin``, and you register them with the ``is_holy`` matcher.
+``MatcherPlugin``, and you register them with the ``is_holy`` matcher.
 
 So, this is your ``is_holy`` matcher:
 
 .. code:: python
 
-    class IsHolyMatcher(MultisegmentMatcher):
+    class IsHolyMatcher(MulticomponentMatcher):
         def __init__(self):
             super().__init__()
 
@@ -74,11 +74,11 @@ So, this is your ``is_holy`` matcher:
 
 And that's it. You don't have to override the usual matcher methods. Everything
 will be done by the parent class. However, it doesn't do any matching yet, so we
-need to write the plugins. Let's start with the actual holyness:
+need to write the plugins. Let's start with the actual holiness:
 
 .. code:: python
 
-    class HolynessMatcher(BaseMatcher, MatcherPluginMixin):
+    class HolinessMatcher(MatcherPlugin):
         def __init__(is_holy=True):
             super().__init__()
             self.is_holy = is_holy
@@ -99,7 +99,7 @@ And then you register it with the main matcher:
 
 .. code:: python
 
-    class IsHolyMatcher(MultisegmentMatcher):
+    class IsHolyMatcher(MulticomponentMatcher):
         def __init__(self, is_holy):
             super().__init__()
             self.register(HolynessMatcher(is_holy))
@@ -107,7 +107,7 @@ And then you register it with the main matcher:
     def holy(is_holy):
         return IsHolyMatcher(is_holy)
 
-Of course, you could write that ``HolynessMatcher`` logic in your
+Of course, you could write that ``HolinessMatcher`` logic in your
 ``IsHolyMatcher``, but if we have the power of plugins, then why not use it?
 
 For now, we only have this bit: ``assert_that(the_grail, is_holy())``, and
@@ -117,19 +117,18 @@ but here's how you register it with the main matcher:
 
 .. code:: python
 
-    class IsHolyMatcher(MultisegmentMatcher):
+    class IsHolyMatcher(MulticomponentMatcher):
         def __init__(self, is_holy):
             super().__init__()
             self.register(HolynessMatcher(is_holy))
 
         def with_width(self, value):
-            self.register(GrailWidthMatcher(value))
-            return self
+            return self.register(GrailWidthMatcher(value))
 
     def holy(is_holy):
         return IsHolyMatcher(is_holy)
 
 Now you can do the ``is_holy().with_width(greater_than(5))`` stuff.
-**Note that you have to return** ``self`` **from the plugin registering methods**,
+**Note that you have to return** ``self.register(...)`` **from the plugin registering methods**,
 as (a) you might want to chain them, and (b) the result of the chain still
 needs to be a matcher.
