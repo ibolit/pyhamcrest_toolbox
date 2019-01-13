@@ -1,0 +1,3 @@
+PyHamcrest==1.9.*
+pyhamcrest_toolbox==0.3.*
+pytest==4.1.*
