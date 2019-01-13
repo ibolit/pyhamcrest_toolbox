@@ -39,7 +39,7 @@ So, instead of this:
         assert_that(the_holy_grail.width, greater_than(6))
         assert_that(the_holy_grail.height, greater_than(7))
 
-this should be written:
+this should be written as:
 
 .. code:: python
 
@@ -53,8 +53,23 @@ this should be written:
                 .with_height(greater_than(7))
         )
 
-The second one, however, requires writing your own matchers. With this toolbox,
+or:
+
+.. code:: python
+
+    def test_the_holy_grail():
+        the_holy_grail = seek_the_holy_grail()
+        assert_that(
+            the_holy_grail,
+            grail(holy=True, width=5))
+
+
+Both these examples, however, require writing your own matchers. With this toolbox,
 it is easy.
+
+MulticomponentMatcher
+---------------------
+The ``MulticomponentMatcher`` allows writing the chain-style matchers.
 
 All you have to do is to write your ``is_holy`` matcher that inherits from the
 ``MulticomponentMatcher`` as the backbone. Then you write individual matchers
@@ -120,7 +135,7 @@ but here's how you register it with the main matcher:
     class IsHolyMatcher(MulticomponentMatcher):
         def __init__(self, is_holy):
             super().__init__()
-            self.register(HolynessMatcher(is_holy))
+            self.register(HolinessMatcher(is_holy))
 
         def with_width(self, value):
             return self.register(GrailWidthMatcher(value))
@@ -132,3 +147,52 @@ Now you can do the ``is_holy().with_width(greater_than(5))`` stuff.
 **Note that you have to return** ``self.register(...)`` **from the plugin registering methods**,
 as (a) you might want to chain them, and (b) the result of the chain still
 needs to be a matcher.
+
+KwargMulticomponentMatcher
+--------------------------
+
+This matcher allows writing the kwarg-style matchers (as in the second example
+above), which are more pythonic, but look kind of unnatural when you want to
+match against another matcher instead of a plain value. I will show what I mean
+in a minute.
+
+The general approach is the same as with the multicomponent matcher: you write
+matcher plugins for your components, and then you register them with your main
+matcher:
+
+.. code:: python
+
+    class GrailMatcher(KwargMulticomponentMatcher):
+        def __init__(self, holy=None, width=None):
+            self.register_for_kwarg(HolinessMatcher(holy), holy)
+            self.register_for_kwarg(GrailWidthMatcher(width), width)
+
+And then in your tests you do:
+
+.. code:: python
+
+    def test_correct_width_wrong_holiness(self, my_grail):
+        assert_that(
+            my_grail,
+            grail(holy=True, width=4))
+
+As I said before, this looks more pythonic, however, if you want to check your
+values against matchers, and not just plain values (like `width=4` here), your
+code starts looking a bit strange:
+
+.. code:: python
+
+    def test_correct_width_wrong_holiness(self, my_grail):
+        assert_that(
+            my_grail,
+            grail(holy=True, width=greater_than(4)))
+
+My recommendation is to use the chain-style matchers if you know that your
+main matcher might be used this way.
+
+Demos
+-----
+
+You can find the demos for both approaches in the `demo` folder of this repo.
+Clone it, install the requirements from `demo/requirements.txt`,  and run
+`pytest demo/test_*`
