@@ -28,13 +28,15 @@ class MatcherPlugin(BaseMatcher):
 
 class MulticomponentMatcher(BaseMatcher):
     def __init__(self, *args, **kwargs):
-        self._matchers = []
+        self._matchers = {}
 
 
     def _matches(self, item):
         match_result = True
         for m in self._matchers:
-            match_result &= m._matches(item)
+            r = m._matches(item)
+            self._matchers[m] = r
+            match_result &= r
 
         return match_result
 
@@ -49,19 +51,35 @@ class MulticomponentMatcher(BaseMatcher):
         :param plugin: Instances of ``MatcherPluginMixin``
         :return:
         """
-        self._matchers.append(plugin)
+        self._matchers[plugin] = False
         return self
 
 
     def describe_to(self, description):
-        descriptions = [get_description(m) for m in self._matchers]
+        descriptions = [
+            get_description(m)
+            for m in self._matchers]
         a = "{}.".format("; ".join(descriptions))
         a = sentence_case(a)
         description.append_text(a)
 
 
     def describe_mismatch(self, item, mismatch_description):
-        m_desrs = [get_mismatch_description(m, item) for m in self._matchers]
+        m_desrs = [
+            get_mismatch_description(m, item)
+            for m, result in self._matchers.items()
+            if not result]
         m_desrs = filter(None, m_desrs)
         a = sentence_case("{}.".format("; ".join(m_desrs)))
         mismatch_description.append_text(a)
+
+
+class KwargMulticomponentMatcher(MulticomponentMatcher):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+    def register_for_kwarg(self, plugin, kwarg=None):
+        """Register a plugin for a plugin for a kwarg argument"""
+        if kwarg is not None:
+            self.register(plugin)
